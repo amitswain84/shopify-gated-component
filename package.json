@@ -1,0 +1,26 @@
+{
+  "name": "gated-component-library",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:push": "turbo run db:push",
+    "db:studio": "turbo run db:studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^1.13.2"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "packageManager": "pnpm@8.15.4"
+}
