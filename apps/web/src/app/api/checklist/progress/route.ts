@@ -21,7 +21,7 @@ export async function GET() {
     })
 
     return NextResponse.json(
-      { completed: progress.map(p => p.checklistId) },
+      { completed: progress.map((p: { checklistId: string }) => p.checklistId) },
       { headers: { 'Cache-Control': 'no-store' } }
     )
   } catch (error) {
