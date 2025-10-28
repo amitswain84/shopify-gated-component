@@ -53,7 +53,25 @@ export async function getAllComponents(): Promise<ComponentMetadata[]> {
       },
     })
 
-    return components.map((c) => ({
+    return components.map((c: {
+      componentId: string;
+      name: string;
+      description: string;
+      category: string;
+      isFree: boolean;
+      code: string;
+      preview?: string | null;
+      note?: string | null;
+      installFilename?: string | null;
+      previewImage?: string | null;
+      codeFilename?: string | null;
+      implementationGuide?: string | null;
+      customization?: string | null;
+      variantCount: number;
+      componentCount?: number | null;
+      thumbnail?: string | null;
+      isPageExample: boolean;
+    }) => ({
       id: c.componentId,
       name: c.name,
       description: c.description,
