@@ -1,10 +1,10 @@
-import { auth } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import { prisma } from '@gated/database'
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -38,9 +38,12 @@ export async function POST(req: Request) {
     })
 
     if (plan === 'PAID') {
-      // Create Lemon Squeezy checkout
-      const checkoutUrl = await createCheckout(userId)
-      return NextResponse.json({ checkoutUrl })
+      // For paid plan, return a flag to trigger checkout on the client
+      // The actual checkout will be initiated from the pricing dialog/cards
+      return NextResponse.json({ 
+        success: true, 
+        requiresCheckout: true 
+      })
     }
 
     return NextResponse.json({ success: true })
@@ -51,10 +54,4 @@ export async function POST(req: Request) {
       { status: 500 }
     )
   }
-}
-
-async function createCheckout(userId: string): Promise<string> {
-  // TODO: Implement Lemon Squeezy checkout creation
-  // This is a placeholder
-  return `https://checkout.lemonsqueezy.com/buy/${process.env.LEMONSQUEEZY_VARIANT_ID}?checkout[custom][user_id]=${userId}`
 }

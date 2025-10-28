@@ -1,0 +1,58 @@
+=============================================
+🚨 URGENT: Payment Not Working - Quick Fix
+=============================================
+
+PROBLEM:
+--------
+The "Upgrade to Pro" button does nothing because Lemon Squeezy
+credentials in .env.local are set to "xxx" (placeholder values).
+
+SOLUTION:
+---------
+1. Open: apps/web/.env.local
+
+2. Find these lines:
+   LEMONSQUEEZY_STORE_ID=xxx
+   LEMONSQUEEZY_VARIANT_ID=xxx
+   LEMONSQUEEZY_WEBHOOK_SECRET=xxx
+
+3. Replace "xxx" with your actual Lemon Squeezy credentials:
+   - Get Store ID from: Lemon Squeezy → Settings → Stores
+   - Get Variant ID from: Lemon Squeezy → Products → [Your Product] → [Variant]
+   - Get Webhook Secret from: Lemon Squeezy → Settings → Webhooks
+
+4. Save the file
+
+5. Restart your dev server:
+   - Press Ctrl+C to stop
+   - Run: pnpm dev
+
+6. Test by clicking "Upgrade to Pro"
+
+WHERE TO GET CREDENTIALS:
+-------------------------
+Login to: https://app.lemonsqueezy.com
+
+Store ID: Settings → Stores (remove # symbol)
+Variant ID: Products → Click product → Click variant
+Webhook Secret: Settings → Webhooks → Create/Edit webhook → Copy signing secret
+
+WHAT CHANGED:
+-------------
+✓ Added error handling to show helpful messages
+✓ Added loading state ("Processing...") 
+✓ Added console logs for debugging
+✓ Code now detects "xxx" placeholder and shows error
+✓ Enhanced pricing cards with better feedback
+
+DEBUGGING:
+----------
+If still not working after fixing credentials:
+1. Open browser console (F12)
+2. Click "Upgrade to Pro"
+3. Look for messages like:
+   - "Creating checkout session..."
+   - "Checkout session created: ..."
+   - Any error messages
+
+Read FIX_PAYMENT_NOW.md for detailed troubleshooting.

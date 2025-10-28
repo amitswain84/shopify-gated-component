@@ -3,10 +3,15 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   darkMode: ['class'],
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/ui/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx,md}',
+    // Scan only source files in workspaces to avoid node_modules
+    '../../packages/ui/src/**/*.{ts,tsx}',
+    '../../packages/components/src/**/*.{ts,tsx}',
+  ],
+  safelist: [
+    { pattern: /^(container|flex|grid|inline-flex)$/ },
+    { pattern: /^(p|px|py|pt|pr|pb|pl|m|mx|my|mt|mr|mb|ml)-(0|0\.5|1|1\.5|2|2\.5|3|3\.5|4|5|6|7|8|9|10|11|12)$/ },
+    { pattern: /^(text|bg|border|shadow|rounded|h|max-h|min-h|w|max-w|min-w|gap|justify|items|content|place|top|right|bottom|left|z|aspect|object|overflow|whitespace|truncate)/ },
   ],
   theme: {
     extend: {
@@ -43,6 +48,23 @@ const config: Config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        chart: {
+          1: 'hsl(var(--chart-1))',
+          2: 'hsl(var(--chart-2))',
+          3: 'hsl(var(--chart-3))',
+          4: 'hsl(var(--chart-4))',
+          5: 'hsl(var(--chart-5))',
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
         },
       },
       borderRadius: {

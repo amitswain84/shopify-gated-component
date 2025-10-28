@@ -2,116 +2,435 @@ export interface ComponentMetadata {
   id: string
   name: string
   description: string
-  category: string
+  category: 'free' | 'paid' | 'all'
   isFree: boolean
   code: string
   preview?: string
+  variantCount: number
+  componentCount?: number
+  thumbnail?: string
+  isPageExample?: boolean
+}
+
+// Helper function to fetch components from database (optional)
+export async function fetchComponentsFromDB(): Promise<ComponentMetadata[]> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/components`)
+    if (!response.ok) throw new Error('Failed to fetch')
+    const { components } = await response.json()
+    return components.map((c: any) => ({
+      id: c.componentId,
+      name: c.name,
+      description: c.description,
+      category: c.category,
+      isFree: c.isFree,
+      code: c.code || '',
+      preview: c.preview,
+      variantCount: c.variantCount,
+      componentCount: c.componentCount,
+      thumbnail: c.thumbnail,
+      isPageExample: c.isPageExample,
+    }))
+  } catch (error) {
+    console.error('Failed to fetch components from DB, falling back to registry:', error)
+    return componentRegistry
+  }
 }
 
 export const componentRegistry: ComponentMetadata[] = [
-  // Free Components (20)
+  // FREE COMPONENTS
   {
-    id: 'button',
-    name: 'Button',
-    description: 'A versatile button component with multiple variants',
-    category: 'Forms',
+    id: 'landing-pages',
+    name: 'Landing page examples',
+    description: '40 page examples',
+    category: 'free',
     isFree: true,
-    code: `export function Button({ children, variant = 'default' }: { children: React.ReactNode; variant?: 'default' | 'outline' }) {
-  return (
-    <button className={\`px-4 py-2 rounded \${variant === 'outline' ? 'border border-gray-300' : 'bg-primary text-white'}\`}>
-      {children}
-    </button>
-  )
-}`,
+    variantCount: 40,
+    isPageExample: true,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function LandingPage() { return <div>Landing Page</div> }`,
   },
   {
-    id: 'input',
-    name: 'Input',
-    description: 'Text input field with label support',
-    category: 'Forms',
+    id: 'featured-icons',
+    name: 'Featured icons',
+    description: '1 component + 6 variants',
+    category: 'free',
     isFree: true,
-    code: `export function Input({ label, ...props }: { label?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <div>
-      {label && <label className="block text-sm font-medium mb-1">{label}</label>}
-      <input className="w-full px-3 py-2 border border-gray-300 rounded" {...props} />
-    </div>
-  )
-}`,
+    componentCount: 1,
+    variantCount: 6,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function FeaturedIcon() { return <div>Icon Component</div> }`,
   },
   {
-    id: 'card',
-    name: 'Card',
-    description: 'Container component for content sections',
-    category: 'Layout',
+    id: 'buttons',
+    name: 'Buttons',
+    description: '1 component + 13 variants',
+    category: 'free',
     isFree: true,
-    code: `export function Card({ children, title }: { children: React.ReactNode; title?: string }) {
-  return (
-    <div className="border border-gray-200 rounded-lg p-6 shadow-sm">
-      {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
-      {children}
-    </div>
-  )
-}`,
+    componentCount: 1,
+    variantCount: 13,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Button() { return <div>Button Component</div> }`,
   },
-  // Add more free components as placeholders
-  ...Array.from({ length: 17 }, (_, i) => ({
-    id: `free-component-${i + 4}`,
-    name: `Free Component ${i + 4}`,
-    description: `This is free component number ${i + 4}`,
-    category: 'General',
+  {
+    id: 'social-buttons',
+    name: 'Social buttons',
+    description: '1 component + 12 variants',
+    category: 'free',
     isFree: true,
-    code: `export function FreeComponent${i + 4}() { return <div>Free Component ${i + 4}</div> }`,
-  })),
+    componentCount: 1,
+    variantCount: 12,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function SocialButton() { return <div>Social Button Component</div> }`,
+  },
+  {
+    id: 'mobile-app-store-buttons',
+    name: 'Mobile app store buttons',
+    description: '1 component + 8 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 8,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function AppStoreButton() { return <div>App Store Button Component</div> }`,
+  },
+  {
+    id: 'utility-buttons',
+    name: 'Utility buttons',
+    description: '2 components + 5 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 2,
+    variantCount: 5,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function UtilityButton() { return <div>Utility Button Component</div> }`,
+  },
+  {
+    id: 'button-groups',
+    name: 'Button groups',
+    description: '1 component + 6 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 6,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function ButtonGroup() { return <div>ButtonGroup Component</div> }`,
+  },
+  {
+    id: 'badges',
+    name: 'Badges',
+    description: '1 component + 25 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 25,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Badge() { return <div>Badge Component</div> }`,
+  },
+  {
+    id: 'badge-groups',
+    name: 'Badge groups',
+    description: '1 component + 20 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 20,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function BadgeGroup() { return <div>Badge Group Component</div> }`,
+  },
+  {
+    id: 'tags',
+    name: 'Tags',
+    description: '1 component + variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 8,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Tag() { return <div>Tag Component</div> }`,
+  },
+  {
+    id: 'dropdowns',
+    name: 'Dropdowns',
+    description: '1 component + 3 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 3,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Dropdown() { return <div>Dropdown Component</div> }`,
+  },
+  {
+    id: 'select',
+    name: 'Select',
+    description: '1 component + 8 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 8,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Select() { return <div>Select Component</div> }`,
+  },
+  {
+    id: 'inputs',
+    name: 'Inputs',
+    description: '1 component + 10 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 10,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Input() { return <div>Input Component</div> }`,
+  },
+  {
+    id: 'textareas',
+    name: 'Textareas',
+    description: '1 component + 3 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 3,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Textarea() { return <div>Textarea Component</div> }`,
+  },
+  {
+    id: 'verification-code-inputs',
+    name: 'Verification code inputs',
+    description: '1 component + 4 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 4,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function VerificationCode() { return <div>Verification Code Component</div> }`,
+  },
+  {
+    id: 'rich-text-editors',
+    name: 'Rich text editors',
+    description: '1 component + 5 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 5,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function RichTextEditor() { return <div>Rich Text Editor Component</div> }`,
+  },
+  {
+    id: 'avatar',
+    name: 'Avatar',
+    description: '1 component + 3 variants',
+    category: 'free',
+    isFree: true,
+    componentCount: 1,
+    variantCount: 3,
+    thumbnail: '/thumbnails/avatar.svg',
+    code: `export function Avatar() { return <div>Avatar Component</div> }`,
+  },
 
-  // Paid Components (30)
+  // Page Examples
   {
-    id: 'advanced-table',
-    name: 'Advanced Table',
-    description: 'Feature-rich data table with sorting and pagination',
-    category: 'Data Display',
+    id: 'landing-pages',
+    name: 'Landing page examples',
+    description: '40 page examples',
+    category: 'free',
+    isFree: true,
+    variantCount: 40,
+    isPageExample: true,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function LandingPage() { return <div>Landing Page</div> }`,
+  },
+  {
+    id: 'dashboard-examples',
+    name: 'Dashboard examples',
+    description: '60 page examples',
+    category: 'free',
+    isFree: true,
+    variantCount: 60,
+    isPageExample: true,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function Dashboard() { return <div>Dashboard</div> }`,
+  },
+  {
+    id: 'pricing-examples',
+    name: 'Pricing page examples',
+    description: '20 page examples',
+    category: 'free',
+    isFree: true,
+    variantCount: 20,
+    isPageExample: true,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `export function PricingPage() { return <div>Pricing Page</div> }`,
+  },
+
+  // PAID/PREMIUM COMPONENTS
+  {
+    id: 'advanced-tables',
+    name: 'Advanced data tables',
+    description: '12 components + 450 variants',
+    category: 'paid',
     isFree: false,
+    componentCount: 12,
+    variantCount: 450,
+    thumbnail: '/thumbnails/placeholder.svg',
     code: `// This is premium content. Upgrade to access this component.`,
   },
   {
-    id: 'chart',
-    name: 'Chart',
-    description: 'Interactive charts and graphs',
-    category: 'Data Display',
+    id: 'interactive-charts',
+    name: 'Interactive charts',
+    description: '15 components + 320 variants',
+    category: 'paid',
     isFree: false,
+    componentCount: 15,
+    variantCount: 320,
+    thumbnail: '/thumbnails/placeholder.svg',
     code: `// This is premium content. Upgrade to access this component.`,
   },
   {
-    id: 'modal',
-    name: 'Modal',
-    description: 'Advanced modal dialog with animations',
-    category: 'Overlay',
+    id: 'calendar',
+    name: 'Calendar',
+    description: '8 components + 180 variants',
+    category: 'paid',
     isFree: false,
+    componentCount: 8,
+    variantCount: 180,
+    thumbnail: '/thumbnails/placeholder.svg',
     code: `// This is premium content. Upgrade to access this component.`,
   },
-  // Add more paid components as placeholders
-  ...Array.from({ length: 27 }, (_, i) => ({
-    id: `paid-component-${i + 4}`,
-    name: `Premium Component ${i + 4}`,
-    description: `This is premium component number ${i + 4}`,
-    category: 'Premium',
+  {
+    id: 'kanban-board',
+    name: 'Kanban board',
+    description: '6 components + 95 variants',
+    category: 'paid',
     isFree: false,
+    componentCount: 6,
+    variantCount: 95,
+    thumbnail: '/thumbnails/placeholder.svg',
     code: `// This is premium content. Upgrade to access this component.`,
-  })),
+  },
+  {
+    id: 'file-upload',
+    name: 'File upload',
+    description: '5 components + 120 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 5,
+    variantCount: 120,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'rich-text-editor',
+    name: 'Rich text editor',
+    description: '4 components + 85 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 4,
+    variantCount: 85,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'code-editor',
+    name: 'Code editor',
+    description: '6 components + 145 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 6,
+    variantCount: 145,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'dashboard-layouts',
+    name: 'Dashboard layouts',
+    description: '85 page examples',
+    category: 'paid',
+    isFree: false,
+    variantCount: 85,
+    isPageExample: true,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'timeline',
+    name: 'Timeline',
+    description: '7 components + 110 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 7,
+    variantCount: 110,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'pricing-tables',
+    name: 'Pricing tables',
+    description: '10 components + 230 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 10,
+    variantCount: 230,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'stat-cards',
+    name: 'Stat cards',
+    description: '12 components + 280 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 12,
+    variantCount: 280,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'carousel',
+    name: 'Carousel',
+    description: '8 components + 165 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 8,
+    variantCount: 165,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'command-palette',
+    name: 'Command palette',
+    description: '4 components + 72 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 4,
+    variantCount: 72,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'notification-center',
+    name: 'Notification center',
+    description: '6 components + 140 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 6,
+    variantCount: 140,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
+  {
+    id: 'image-gallery',
+    name: 'Image gallery',
+    description: '9 components + 195 variants',
+    category: 'paid',
+    isFree: false,
+    componentCount: 9,
+    variantCount: 195,
+    thumbnail: '/thumbnails/placeholder.svg',
+    code: `// This is premium content. Upgrade to access this component.`,
+  },
 ]
 
+// Helper function to get component by ID
 export function getComponentById(id: string): ComponentMetadata | undefined {
-  return componentRegistry.find((c) => c.id === id)
-}
-
-export function getComponentsByCategory(category: string): ComponentMetadata[] {
-  return componentRegistry.filter((c) => c.category === category)
-}
-
-export function getFreeComponents(): ComponentMetadata[] {
-  return componentRegistry.filter((c) => c.isFree)
-}
-
-export function getPaidComponents(): ComponentMetadata[] {
-  return componentRegistry.filter((c) => !c.isFree)
+  return componentRegistry.find((component) => component.id === id)
 }

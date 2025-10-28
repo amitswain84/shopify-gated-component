@@ -1,0 +1,25 @@
+import { ComponentDocs } from '@/components/component-docs'
+
+export default function MDXContent() {
+  return (
+    <ComponentDocs
+      title="Buttons"
+      description="Versatile button components with multiple styles."
+      tags={["buttons", "ui", "actions"]}
+      image="/thumbnails/placeholder.svg"
+      code={`export function Button({ variant = 'default', children }) {
+  return (
+    <button className={"px-4 py-2 rounded " + (variant === 'outline' ? 'border border-gray-300' : 'bg-primary text-white')}>
+      {children}
+    </button>
+  )
+}`}
+    >
+      <ol>
+        <li>Import the Button component into your project.</li>
+        <li>Choose a variant: <code>default</code> or <code>outline</code>.</li>
+        <li>Wrap your content with the Button and pass the variant prop.</li>
+      </ol>
+    </ComponentDocs>
+  )
+}

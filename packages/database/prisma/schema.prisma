@@ -47,3 +47,91 @@ enum Status {
   PAST_DUE
   PAUSED
 }
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  subscribed Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChecklistProgress {
+  id         String   @id @default(cuid())
+  userId     String
+  checklistId String
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@unique([userId, checklistId])
+  @@index([userId])
+}
+
+model ChecklistItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  isPro       Boolean  @default(false)
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  detailContent String @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([isPro])
+  @@index([isActive])
+  @@index([order])
+}
+
+model Component {
+  id                   String   @id @default(cuid())
+  componentId          String   @unique // For URL routing like 'avatar', 'button', etc.
+  name                 String
+  description          String
+  category             String   // 'free' | 'paid' | 'all'
+  isFree               Boolean  @default(true)
+  code                 String   @db.Text
+  preview              String?  @db.Text
+  // New fields for component library metadata and SaaS sync
+  note                 String?  @db.Text       // Problem statement / notes
+  installFilename      String?                 // Installation or file name
+  previewImage         String?                 // Preview image URL/path
+  codeFilename         String?                 // Code filename (synced with installFilename)
+  implementationGuide  String?  @db.Text       // Implementation guide text
+  customization        String?  @db.Text       // Customization guide text
+  variantCount         Int      @default(1)
+  componentCount       Int?
+  thumbnail            String?
+  isPageExample        Boolean  @default(false)
+  order                Int      @default(0)
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  @@index([isFree])
+  @@index([isActive])
+  @@index([order])
+  @@index([componentId])
+}
+
+model ChangelogEntry {
+  id        String   @id @default(cuid())
+  date      DateTime?
+  version   String
+  title     String
+  badges    String[]
+  image     String?
+  videoUrl  String?
+  features  String[]
+  bugFixes  String[]
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([order])
+  @@index([date])
+}
