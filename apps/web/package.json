@@ -56,9 +56,9 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
-  }
+  },
   "engines": {
-    "node": ">=20.x"
+    "node": "20.x"
   },
   "packageManager": "pnpm@9.12.3"
 }
