@@ -5,17 +5,23 @@ import ChecklistClient from './ChecklistClient'
 
 export default async function ShopifyChecklistPage() {
   // Server-side fetch ensures data shows immediately (no client API dependency)
-  const items = await prisma.$queryRaw<Array<{
-    id: string,
-    title: string,
-    description: string,
-    icon: string,
-    isPro: boolean,
-    detailContent: string,
-  }>>`SELECT id, title, description, icon, "isPro", COALESCE("detailContent", '') AS "detailContent"
-     FROM "ChecklistItem"
-     WHERE "isActive" = true
-     ORDER BY "order" ASC`
+  let items: Array<{ id: string; title: string; description: string; icon: string; isPro: boolean; detailContent: string }>
+  try {
+    items = await prisma.$queryRaw<Array<{
+      id: string,
+      title: string,
+      description: string,
+      icon: string,
+      isPro: boolean,
+      detailContent: string,
+    }>>`SELECT id, title, description, icon, "isPro", COALESCE("detailContent", '') AS "detailContent"
+       FROM "ChecklistItem"
+       WHERE "isActive" = true
+       ORDER BY "order" ASC`
+  } catch (err) {
+    console.error('Checklist server fetch failed:', err)
+    items = []
+  }
 
   return <ChecklistClient initialItems={items} />
 }
