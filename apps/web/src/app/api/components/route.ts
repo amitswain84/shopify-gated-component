@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextResponse } from 'next/server'
+import { prisma } from '@gated/database'
 import { getComponentsByCategory, allComponents } from '@/lib/content-collections'
 
 export async function GET(req: Request) {

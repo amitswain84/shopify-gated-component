@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { prisma } from '@gated/database'
 import { getAllChecklistItems } from '@/lib/checklist-content'
 
 export const dynamic = 'force-dynamic'
