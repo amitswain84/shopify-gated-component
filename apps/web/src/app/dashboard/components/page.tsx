@@ -4,6 +4,17 @@ import { headers } from 'next/headers'
 import { ComponentCard } from '@/components/component-card'
 import { getAllComponents } from '@/lib/components-db'
 import { ComponentsFilterTabs } from '@/components/components-filter-tabs'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Browse All React Components - Free & Premium',
+  description: 'Explore our complete collection of 850+ React components. Filter by free or premium. Built with Tailwind CSS and shadcn/ui. Copy-paste ready code for faster development.',
+  keywords: ['React components library', 'Tailwind CSS components', 'UI components', 'free React components', 'premium components', 'shadcn/ui components'],
+  openGraph: {
+    title: 'Browse React Components - Gated Component Library',
+    description: 'Explore 850+ React components built with Tailwind CSS. Start with 20 free components.',
+  },
+}
 
 type SearchParams = {
   filter?: string

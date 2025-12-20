@@ -1,52 +1,44 @@
 export const dynamic = 'force-dynamic'
 
 import { NextResponse } from 'next/server'
-import { prisma } from '@gated/database'
+import { getComponentsByCategory, allComponents } from '@/lib/content-collections'
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
     const filter = searchParams.get('filter')
 
-    let where: any = {
-      isActive: true,
-    }
+    let components = allComponents
 
     if (filter === 'free') {
-      where.isFree = true
+      components = getComponentsByCategory('free')
     } else if (filter === 'premium') {
-      where.isFree = false
+      components = getComponentsByCategory('paid')
     }
 
-    const components = await prisma.component.findMany({
-      where,
-      orderBy: {
-        order: 'asc',
-      },
-      select: {
-        id: true,
-        componentId: true,
-        name: true,
-        description: true,
-        category: true,
-        isFree: true,
-        preview: true,
-        // New optional metadata from DB; safe if null
-        note: true,
-        installFilename: true,
-        previewImage: true,
-        codeFilename: true,
-        implementationGuide: true,
-        customization: true,
-        variantCount: true,
-        componentCount: true,
-        thumbnail: true,
-        isPageExample: true,
-        order: true,
-      },
-    })
+    // Transform to match expected API format
+    const transformedComponents = components.map((component) => ({
+      id: component.id,
+      componentId: component.id,
+      name: component.name,
+      description: component.description,
+      category: component.category,
+      isFree: component.isFree,
+      preview: component.preview,
+      note: `Component with ${component.variantCount} variants`,
+      installFilename: `${component.id}.tsx`,
+      previewImage: component.thumbnail,
+      codeFilename: `${component.id}.tsx`,
+      implementationGuide: component.implementationSteps?.join('\n'),
+      customization: component.customizationGuide?.map(guide => `${guide.title}: ${guide.content}`).join('\n'),
+      variantCount: component.variantCount,
+      componentCount: component.componentCount,
+      thumbnail: component.thumbnail,
+      isPageExample: component.isPageExample,
+      order: component.order,
+    }))
 
-    return NextResponse.json({ components })
+    return NextResponse.json({ components: transformedComponents })
   } catch (error) {
     console.error('Failed to fetch components:', error)
     return NextResponse.json({ error: 'Failed to fetch components' }, { status: 500 })

@@ -5,7 +5,7 @@ try {
   if (!process.env.DATABASE_URL) {
     require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
   }
-} catch {}
+} catch { }
 
 const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
@@ -24,6 +24,22 @@ const baseConfig = {
       {
         protocol: 'https',
         hostname: 'www.untitledui.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'startup-template-sage.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui.aceternity.com',
       },
     ],
   },

@@ -1,19 +1,11 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Check, MoveRight } from 'lucide-react'
+import { Check, Lock } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
-import { useEffect, useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
 
 interface PricingCardsProps {
   onClose?: () => void
@@ -21,214 +13,238 @@ interface PricingCardsProps {
 
 export function PricingCards({ onClose }: PricingCardsProps = {}) {
   const { user, isSignedIn } = useUser()
-  const [currentPlan, setCurrentPlan] = useState<'free' | 'pro' | null>(null)
+  const [currentPlan, setCurrentPlan] = useState<'free' | 'pro' | 'lifetime' | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+
+  const [selectedPlan, setSelectedPlan] = useState<'free' | 'pro' | 'lifetime'>('pro')
 
   useEffect(() => {
     if (isSignedIn) {
-      // TODO: Fetch user's current plan from database
-      // For now, default to free for signed-in users
       setCurrentPlan('free')
     }
   }, [isSignedIn])
 
-  const handleSelectPlan = async (plan: 'free' | 'pro') => {
+  const handleSelectPlan = async (plan: 'free' | 'pro' | 'lifetime') => {
     if (!isSignedIn) return
-    
+
     setLoading(true)
     setError(null)
-    
+
     if (plan === 'free') {
       try {
-        // Update to free plan
         const response = await fetch('/api/onboarding', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ plan: 'FREE' }),
         })
-        
-        if (!response.ok) {
-          throw new Error('Failed to update plan')
-        }
-        
-        // Close dialog when selecting free plan
+        if (!response.ok) throw new Error('Failed to update plan')
         onClose?.()
         window.location.reload()
       } catch (error) {
-        console.error('Failed to update plan:', error)
         setError('Failed to update plan. Please try again.')
         setLoading(false)
       }
-    } else {
+    } else if (plan === 'pro') {
       try {
-        console.log('Creating checkout session...')
-        
-        // Create checkout session for Pro plan
         const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
+          body: JSON.stringify({ billingPeriod: 'yearly', plan: 'pro' }),
         })
-        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.error || 'Failed to create checkout session')
         }
-        
         const data = await response.json()
-        console.log('Checkout session created:', data)
-        
-        if (data.checkoutUrl) {
-          // Redirect to Lemon Squeezy checkout
-          console.log('Redirecting to:', data.checkoutUrl)
-          window.location.href = data.checkoutUrl
-        } else {
-          throw new Error('No checkout URL returned')
-        }
+        if (data.checkoutUrl) window.location.href = data.checkoutUrl
+        else throw new Error('No checkout URL returned')
       } catch (error) {
-        console.error('Checkout error:', error)
-        setError(error instanceof Error ? error.message : 'Failed to create checkout. Please try again or contact support.')
+        setError(error instanceof Error ? error.message : 'Failed to create checkout.')
+        setLoading(false)
+      }
+    } else if (plan === 'lifetime') {
+      try {
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan: 'lifetime' }),
+        })
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to create checkout session')
+        }
+        const data = await response.json()
+        if (data.checkoutUrl) window.location.href = data.checkoutUrl
+        else throw new Error('No checkout URL returned')
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'Failed to create checkout.')
         setLoading(false)
       }
     }
   }
 
-  const PricingCard = ({ plan, title, price, description, features, highlighted = false }: any) => (
-    <Card className={`w-full rounded-md ${highlighted ? 'shadow-2xl' : ''}`}>
-      <CardHeader>
-        <CardTitle>
-          <span className="flex flex-row gap-4 items-center font-normal">
-            {title}
-          </span>
-        </CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-8 justify-start">
-          <p className="flex flex-row items-center gap-2 text-xl">
-            <span className="text-4xl">{price}</span>
-            <span className="text-sm text-muted-foreground"> / month</span>
-          </p>
-          <div className="flex flex-col gap-4 justify-start">
-            {features.map((feature: any, i: number) => (
-              <div key={i} className="flex flex-row gap-4">
-                <Check className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col">
-                  <p>{feature.title}</p>
-                  <p className="text-muted-foreground text-sm">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          {isSignedIn ? (
-            <Button 
-              variant={plan === 'pro' ? 'default' : 'outline'}
-              className="gap-4"
-              onClick={() => handleSelectPlan(plan)}
-              disabled={currentPlan === plan || loading}
-            >
-              {loading ? 'Processing...' : currentPlan === plan ? `Currently on ${title} Plan` : (
-                plan === 'pro' ? (
-                  <>
-                    Upgrade to Pro <MoveRight className="w-4 h-4" />
-                  </>
-                ) : `Select ${title}`
-              )}
-            </Button>
-          ) : (
-            <Button variant={plan === 'pro' ? 'default' : 'outline'} className="gap-4" asChild>
-              <Link href="/sign-up">
-                Sign up today <MoveRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  )
-
   const plans = [
     {
-      plan: 'free',
-      title: 'Free',
+      id: 'free',
+      name: 'Free Tier',
+      subtitle: 'For evaluators & personal use',
       price: '$0',
-      description: 'Perfect for trying out our component library and getting started with your projects.',
+      period: '/ month',
+      subPrice: 'Personal Use Only',
       features: [
-        { title: '20 free components', description: 'Access to our core component library' },
-        { title: 'Copy & paste code', description: 'Easy integration with your projects' },
-        { title: 'Community support', description: 'Get help from our community' },
-      ]
-    },
-    {
-      plan: 'pro',
-      title: 'Pro',
-      price: '$29',
-      description: 'For professionals who need access to the complete library and premium features.',
-      features: [
-        { title: 'All 50+ components', description: 'Complete access to our entire library' },
-        { title: 'Priority updates', description: 'Get new components first' },
-        { title: 'Priority support', description: 'Fast response times for your questions' },
-        { title: 'Advanced examples', description: 'Real-world implementation examples' },
+        '20+ Essential Components',
+        'Basic Checklists',
+        'Community Support'
       ],
-      highlighted: true
+      popular: false
     },
     {
-      plan: 'enterprise',
-      title: 'Enterprise',
-      price: 'Custom',
-      description: 'Custom solutions for teams and organizations with specific requirements.',
+      id: 'pro',
+      name: 'Growth Bundle',
+      subtitle: 'For serious agencies & devs',
+      price: '$499',
+      period: '',
+      subPrice: '$499 / year (Save 15%)',
       features: [
-        { title: 'Unlimited components', description: 'Everything in Pro plus custom components' },
-        { title: 'Dedicated support', description: '24/7 support with SLA guarantees' },
-        { title: 'Custom components', description: 'We build components for your needs' },
-        { title: 'Team training', description: 'Onboarding and training for your team' },
-      ]
+        'Full 850+ Asset Library',
+        'Unlimited Commercial Use',
+        'Monthly Updates & Releases',
+        '50% Dev Time Reduction'
+      ],
+      popular: false
+    },
+    {
+      id: 'lifetime',
+      name: 'Lifetime Access',
+      subtitle: 'Pay once, own it forever',
+      price: '$999',
+      period: '',
+      subPrice: 'One-Time Payment',
+      features: [
+        'Everything in Growth',
+        'Never Pay Again',
+        'Priority Feature Requests'
+      ],
+      popular: true,
+      badge: 'Most Popular'
     }
   ]
 
-  if (isMobile) {
-    return (
-      <div className="w-full">
-        {error && (
-          <div className="mb-4 p-4 bg-muted border border-border rounded-lg text-foreground text-sm">
-            {error}
-          </div>
-        )}
-        <Tabs defaultValue="pro" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="free">Free</TabsTrigger>
-            <TabsTrigger value="pro">Pro</TabsTrigger>
-            <TabsTrigger value="enterprise">Enterprise</TabsTrigger>
-          </TabsList>
-          {plans.map((planData) => (
-            <TabsContent key={planData.plan} value={planData.plan}>
-              <PricingCard {...planData} />
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
-    )
-  }
+  const activePlan = plans.find(p => p.id === selectedPlan) || plans[1]
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-lg mx-auto space-y-5">
       {error && (
-        <div className="mb-4 p-4 bg-muted border border-border rounded-lg text-foreground text-sm">
+        <div className="w-full mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-md text-destructive text-xs text-center">
           {error}
         </div>
       )}
-      <div className="grid text-left grid-cols-1 lg:grid-cols-3 w-full gap-8">
-        {plans.map((planData) => (
-          <PricingCard key={planData.plan} {...planData} />
-        ))}
+
+      {/* Header */}
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold tracking-tight mb-1 text-foreground">Pricing Plans</h2>
+        <p className="text-muted-foreground text-sm font-medium">Choose the perfect plan for your needs</p>
+      </div>
+
+      {/* Plans Stack */}
+      <div className="space-y-3">
+        {plans.map((plan) => {
+          const isSelected = selectedPlan === plan.id
+
+          return (
+            <div
+              key={plan.id}
+              onClick={() => setSelectedPlan(plan.id as any)}
+              className={cn(
+                "relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden",
+                isSelected
+                  ? "border-blue-600 bg-blue-50/50 shadow-sm ring-1 ring-blue-600/10 dark:bg-blue-900/10 dark:border-blue-500/50"
+                  : "border-border bg-card hover:border-foreground/10 hover:bg-muted/30"
+              )}
+            >
+              {plan.popular && (
+                <div className="absolute top-0 right-0 px-2 py-0.5 bg-blue-600 text-[10px] font-bold text-white rounded-bl-lg">
+                  MOST POPULAR
+                </div>
+              )}
+
+              <div className="p-4 sm:p-5">
+                <div className="flex items-start gap-3">
+                  {/* Radio Circle */}
+                  <div className={cn(
+                    "mt-0.5 flex-shrink-0 w-4 h-4 rounded-full border flex items-center justify-center transition-colors",
+                    isSelected
+                      ? "border-blue-600 dark:border-blue-500"
+                      : "border-muted-foreground/30"
+                  )}>
+                    {isSelected && <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-500" />}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start w-full gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg font-bold tracking-tight truncate pr-2 text-foreground">{plan.name}</h3>
+                        <p className="text-xs text-muted-foreground font-medium truncate">{plan.subtitle}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="flex items-baseline justify-end gap-1">
+                          <span className="text-base sm:text-lg font-bold text-foreground">{plan.price}</span>
+                          {plan.period && <span className="text-xs text-muted-foreground font-medium">{plan.period}</span>}
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-px">{plan.subPrice}</p>
+                      </div>
+                    </div>
+
+                    {/* Expanded Content for Selected Plan */}
+                    {isSelected && (
+                      <div className="mt-3 pt-3 border-t border-blue-200/50 dark:border-blue-800/50 animate-in fade-in slide-in-from-top-1 duration-200">
+                        <div className="space-y-2">
+                          {plan.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-2">
+                              <div className="flex-shrink-0 w-3.5 h-3.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mt-0.5">
+                                <Check className="w-2 h-2" strokeWidth={3} />
+                              </div>
+                              <span className="text-xs sm:text-sm font-medium text-foreground/80 leading-snug">
+                                {feature}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Global Action Button */}
+      <div className="mt-6 pt-2">
+        {isSignedIn ? (
+          <Button
+            onClick={() => handleSelectPlan(selectedPlan)}
+            disabled={currentPlan === selectedPlan || loading}
+            className="w-full h-11 rounded-lg text-sm sm:text-base font-semibold bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            {loading ? 'Processing...' : `Get Started with ${activePlan.name}`}
+          </Button>
+        ) : (
+          <Button asChild className="w-full h-11 rounded-lg text-sm sm:text-base font-semibold bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            <Link href="/sign-up">
+              Get Started with {activePlan.name}
+            </Link>
+          </Button>
+        )}
+        <div className="flex items-center justify-center gap-1.5 mt-3 text-muted-foreground/60">
+          <Lock className="w-3 h-3" />
+          <p className="text-[10px] font-medium uppercase tracking-wide">
+            Secure payment via Lemon Squeezy
+          </p>
+        </div>
       </div>
     </div>
   )
 }
-

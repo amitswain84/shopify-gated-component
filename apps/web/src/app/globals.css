@@ -12,66 +12,113 @@
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
+    --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
+    --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
+    --accent: 0 0% 96%;
     --accent-foreground: 0 0% 9%;
-    --destructive: 0 0% 40%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
+    /* Faded borders for light mode */
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
     --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
-    --chart-1: 0 0% 20%;
-    --chart-2: 0 0% 40%;
-    --chart-3: 0 0% 60%;
-    --chart-4: 0 0% 75%;
-    --chart-5: 0 0% 85%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 26.1%;
-    --sidebar-primary: 0 0% 10%;
+    --radius: 8px;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    --sidebar: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 0% 95.9%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 0% 91%;
-    --sidebar-ring: 0 0% 50%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 98%;
+
+    --muted-2: 0 0% 90%;
+    --muted-2-foreground: 240 3.8% 46.1%;
+    --gradient-1: 227 81% 67%;
+    --gradient-2: 125 51% 53%;
+    --gradient-3: 318 58% 66%;
+    --font-sans: "Inter", sans-serif;
+    --font-serif: "Roboto Serif", serif;
+    --font-mono: "Roboto Mono", monospace;
+    --font-cursive: "Caveat", cursive;
+    --color-1: oklch(66.2% 0.225 25.9);
+    --color-2: oklch(60.4% 0.26 302);
+    --color-3: oklch(69.6% 0.165 251);
+    --color-4: oklch(80.2% 0.134 225);
+    --color-5: oklch(90.7% 0.231 133);
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 0% 60%;
-    --destructive-foreground: 0 0% 9%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 0 0% 80%;
-    --chart-2: 0 0% 60%;
-    --chart-3: 0 0% 40%;
-    --chart-4: 0 0% 25%;
-    --chart-5: 0 0% 15%;
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 95.9%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 15.9%;
-    --sidebar-accent-foreground: 0 0% 95.9%;
-    --sidebar-border: 0 0% 15.9%;
-    --sidebar-ring: 0 0% 60%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    /* Faded borders for dark mode - Darker than 12% */
+    --border: 240 3.7% 8%;
+    --input: 240 3.7% 8%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    --sidebar: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 8%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 240 5.9% 10%;
+
+    --muted-2: 0 0% 18%;
+    --muted-2-foreground: 240 2% 75%;
+    --gradient-1: 240 77% 25%;
+    --gradient-2: 125 51% 53%;
+    --gradient-3: 318 58% 66%;
+    --color-1: oklch(66.2% 0.225 25.9);
+    --color-2: oklch(60.4% 0.26 302);
+    --color-3: oklch(69.6% 0.165 251);
+    --color-4: oklch(80.2% 0.134 225);
+    --color-5: oklch(90.7% 0.231 133);
+  }
+
+  .theme {
+    --animate-shiny-text: shiny-text 8s infinite;
+    --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  }
+
+  /* Manual Hard Fix for Transparency and Dark Mode */
+  .fix-opaque-bg {
+    background-color: white !important;
+  }
+
+  .dark .fix-opaque-bg {
+    background-color: #09090b !important;
+    /* zinc-950 */
   }
 }
 
@@ -79,14 +126,15 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Mobile-specific tweak to ensure primary buttons rendered full-width align consistently in dialogs */
-@media (max-width: 640px) {
-  button.inline-flex.items-center.justify-center.gap-2.whitespace-nowrap.rounded-md.text-sm.font-medium.transition-colors.focus-visible\:outline-none.focus-visible\:ring-1.focus-visible\:ring-ring.disabled\:pointer-events-none.disabled\:opacity-50.\[\&_svg\]\:pointer-events-none.\[\&_svg\]\:size-4.\[\&_svg\]\:shrink-0.bg-primary.text-primary-foreground.shadow.hover\:bg-primary\/90.px-4.py-2.w-full.h-10 {
-    margin-top: 8px;
-  }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

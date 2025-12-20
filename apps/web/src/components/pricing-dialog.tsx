@@ -13,24 +13,13 @@ interface PricingDialogProps {
 }
 
 export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const { isMobile } = useMediaQuery()
 
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className="max-h-[85vh]">
-          <DrawerHeader>
-            <div className="flex flex-col items-center gap-2">
-              <Badge>Pricing</Badge>
-              <DrawerTitle className="text-2xl tracking-tighter text-center">
-                Choose your plan
-              </DrawerTitle>
-              <DrawerDescription className="text-sm text-center">
-                Start with 20 free components or unlock the full library with Pro.
-              </DrawerDescription>
-            </div>
-          </DrawerHeader>
-          <div className="p-4 overflow-y-auto">
+          <div className="p-3">
             <PricingCards onClose={() => onOpenChange(false)} />
           </div>
         </DrawerContent>
@@ -40,19 +29,8 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex flex-col items-center gap-4">
-            <Badge>Pricing</Badge>
-            <DialogTitle className="text-3xl md:text-4xl tracking-tighter text-center">
-              Choose your plan
-            </DialogTitle>
-            <DialogDescription className="text-lg text-center max-w-2xl">
-              Start with 20 free components or unlock the full library with Pro.
-            </DialogDescription>
-          </div>
-        </DialogHeader>
-        <div className="pt-8">
+      <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto p-0">
+        <div className="p-4">
           <PricingCards onClose={() => onOpenChange(false)} />
         </div>
       </DialogContent>

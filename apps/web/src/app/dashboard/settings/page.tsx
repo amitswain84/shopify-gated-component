@@ -1,7 +1,9 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { prisma } from '@gated/database'
 import Link from 'next/link'
+import { PlanInfoClient } from './PlanInfoClient'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { CreditCard, User } from 'lucide-react'
 
 export default async function SettingsPage() {
   const { userId } = await auth()
@@ -10,81 +12,54 @@ export default async function SettingsPage() {
     redirect('/sign-in')
   }
 
-  const user = await prisma.user.findUnique({
-    where: { clerkId: userId },
-    include: { subscription: true },
-  })
-
-  const subscription = user?.subscription
-
   return (
-    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
-      <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your subscription and account settings
-        </p>
-      </div>
-
-      <div className="border rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Subscription</h2>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
+    <div className="w-full max-w-4xl p-4 sm:p-6 lg:p-8 space-y-6">
+      {/* Subscription & Billing */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <CreditCard className="w-5 h-5 text-primary" />
+            </div>
             <div>
-              <p className="font-medium">Current Plan</p>
-              <p className="text-sm text-muted-foreground">
-                {subscription?.plan || 'FREE'}
-              </p>
+              <CardTitle className="text-lg">Subscription & Billing</CardTitle>
+              <CardDescription className="text-sm">Manage your subscription plan and billing information</CardDescription>
             </div>
-            {subscription?.plan === 'FREE' && (
-              <Link
-                href="/pricing"
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90"
-              >
-                Upgrade to Pro
-              </Link>
-            )}
           </div>
+        </CardHeader>
+        <CardContent>
+          <PlanInfoClient />
+        </CardContent>
+      </Card>
 
-          <div className="flex items-center justify-between pt-4 border-t">
+      {/* Account Settings */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <User className="w-5 h-5 text-primary" />
+            </div>
             <div>
-              <p className="font-medium">Status</p>
-              <p className="text-sm text-muted-foreground">
-                {subscription?.status || 'ACTIVE'}
-              </p>
+              <CardTitle className="text-lg">Account Settings</CardTitle>
+              <CardDescription className="text-sm">Update your personal information and security settings</CardDescription>
             </div>
           </div>
-
-          {subscription?.renewsAt && (
-            <div className="flex items-center justify-between pt-4 border-t">
-              <div>
-                <p className="font-medium">Next Billing Date</p>
-                <p className="text-sm text-muted-foreground">
-                  {new Date(subscription.renewsAt).toLocaleDateString()}
-                </p>
-              </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-lg border bg-muted/50">
+            <div className="space-y-1">
+              <p className="font-medium text-sm sm:text-base">Profile & Security</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Manage your account details, email, and password</p>
             </div>
-          )}
-        </div>
-      </div>
-
-      <div className="border rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Account</h2>
-        <div className="space-y-4">
-          <div>
-            <p className="font-medium">Email</p>
-            <p className="text-sm text-muted-foreground">{user?.email}</p>
-          </div>
-          <div className="pt-4 border-t">
-            <Link
-              href="/dashboard/profile"
-              className="text-sm text-primary hover:underline"
+            <Link 
+              href="/dashboard/profile" 
+              className="w-full sm:w-auto px-4 py-2 rounded-md text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-colors text-center shrink-0"
             >
-              Manage account settings →
+              Manage
             </Link>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

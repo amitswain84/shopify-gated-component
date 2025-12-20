@@ -1,27 +1,11 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@gated/database'
+import { getAllChecklistItems } from '@/lib/checklist-content'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    const items = await prisma.$queryRaw<Array<{
-      id: string,
-      title: string,
-      description: string,
-      icon: string,
-      isPro: boolean,
-      order: number,
-      isActive: boolean,
-      detailContent: string,
-      createdAt?: string,
-      updatedAt?: string,
-    }>>`SELECT id, title, description, icon, "isPro", "order", "isActive",
-            COALESCE("detailContent", '') AS "detailContent",
-            "createdAt", "updatedAt"
-         FROM "ChecklistItem"
-         WHERE "isActive" = true
-         ORDER BY "order" ASC`
+    const items = await getAllChecklistItems()
 
     return NextResponse.json(
       { items },

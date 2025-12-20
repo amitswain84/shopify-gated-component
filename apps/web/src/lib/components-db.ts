@@ -1,14 +1,15 @@
-import { prisma } from '@gated/database'
+import { allComponents, getComponentsByCategory, getComponentById } from './content-collections'
 
 export interface ComponentMetadata {
   id: string
   name: string
   description: string
   category: string
+  access: 'free' | 'paid'
   isFree: boolean
   code: string
   preview?: string
-  // Optional extra metadata, synced from DB
+  // Optional extra metadata
   note?: string
   installFilename?: string
   previewImage?: string
@@ -17,140 +18,70 @@ export interface ComponentMetadata {
   customization?: string
   variantCount: number
   componentCount?: number
-  thumbnail?: string // kept for backward-compat; mapped from previewImage if available
+  thumbnail?: string
   isPageExample?: boolean
 }
 
-// Server-side function to get all components from database only
+// Server-side function to get all components from content collections
 export async function getAllComponents(): Promise<ComponentMetadata[]> {
   try {
-    const components = await prisma.component.findMany({
-      where: {
-        isActive: true,
-      },
-      orderBy: {
-        order: 'asc',
-      },
-      select: {
-        componentId: true,
-        name: true,
-        description: true,
-        category: true,
-        isFree: true,
-        code: true,
-        preview: true,
-        note: true,
-        installFilename: true,
-        previewImage: true,
-        codeFilename: true,
-        implementationGuide: true,
-        customization: true,
-        variantCount: true,
-        componentCount: true,
-        thumbnail: true,
-        isPageExample: true,
-        order: true,
-      },
-    })
-
-    return components.map((c: {
-      componentId: string;
-      name: string;
-      description: string;
-      category: string;
-      isFree: boolean;
-      code: string;
-      preview?: string | null;
-      note?: string | null;
-      installFilename?: string | null;
-      previewImage?: string | null;
-      codeFilename?: string | null;
-      implementationGuide?: string | null;
-      customization?: string | null;
-      variantCount: number;
-      componentCount?: number | null;
-      thumbnail?: string | null;
-      isPageExample: boolean;
-    }) => ({
-      id: c.componentId,
-      name: c.name,
-      description: c.description,
-      category: c.category,
-      isFree: c.isFree,
-      code: c.code,
-      preview: c.preview || undefined,
-      note: c.note || undefined,
-      installFilename: c.installFilename || undefined,
-      previewImage: c.previewImage || undefined,
-      codeFilename: (c.codeFilename || c.installFilename) || undefined,
-      implementationGuide: c.implementationGuide || undefined,
-      customization: c.customization || undefined,
-      variantCount: c.variantCount,
-      componentCount: c.componentCount || undefined,
-      thumbnail: (c.previewImage || c.thumbnail) || undefined,
-      isPageExample: c.isPageExample,
+    return allComponents.map(component => ({
+      id: component.id,
+      name: component.name,
+      description: component.description,
+      category: component.category || 'free',
+      access: component.access,
+      isFree: component.isFree ?? (component.access === 'free'),
+      code: component.code,
+      preview: component.preview,
+      note: `Component with ${component.variantCount} variants`,
+      installFilename: `${component.id}.tsx`,
+      previewImage: component.thumbnail,
+      codeFilename: `${component.id}.tsx`,
+      implementationGuide: component.implementationSteps?.join('\n'),
+      customization: component.customizationGuide?.map(guide => `${guide.title}: ${guide.content}`).join('\n'),
+      variantCount: component.variantCount,
+      componentCount: component.componentCount,
+      thumbnail: component.thumbnail,
+      isPageExample: component.isPageExample,
     }))
   } catch (error) {
-    console.error('Failed to fetch components from database:', error)
+    console.error('Failed to fetch components from content collections:', error)
     return []
   }
 }
 
-// Server-side function to get a single component by ID from database only
-export async function getComponentById(id: string): Promise<ComponentMetadata | null> {
+// Server-side function to get a single component by ID from content collections
+export async function getComponentByIdFromContent(id: string): Promise<ComponentMetadata | null> {
   try {
-    const component = await prisma.component.findFirst({
-      where: {
-        componentId: id,
-        isActive: true,
-      },
-      select: {
-        componentId: true,
-        name: true,
-        description: true,
-        category: true,
-        isFree: true,
-        code: true,
-        preview: true,
-        note: true,
-        installFilename: true,
-        previewImage: true,
-        codeFilename: true,
-        implementationGuide: true,
-        customization: true,
-        variantCount: true,
-        componentCount: true,
-        thumbnail: true,
-        isPageExample: true,
-        order: true,
-      },
-    })
+    const component = getComponentById(id)
 
     if (!component) {
       return null
     }
 
     return {
-      id: component.componentId,
+      id: component.id,
       name: component.name,
       description: component.description,
-      category: component.category,
-      isFree: component.isFree,
+      category: component.category || 'free',
+      access: component.access,
+      isFree: component.isFree ?? (component.access === 'free'),
       code: component.code,
-      preview: component.preview || undefined,
-      note: component.note || undefined,
-      installFilename: component.installFilename || undefined,
-      previewImage: component.previewImage || undefined,
-      codeFilename: (component.codeFilename || component.installFilename) || undefined,
-      implementationGuide: component.implementationGuide || undefined,
-      customization: component.customization || undefined,
+      preview: component.preview,
+      note: `Component with ${component.variantCount} variants`,
+      installFilename: `${component.id}.tsx`,
+      previewImage: component.thumbnail,
+      codeFilename: `${component.id}.tsx`,
+      implementationGuide: component.implementationSteps?.join('\n'),
+      customization: component.customizationGuide?.map(guide => `${guide.title}: ${guide.content}`).join('\n'),
       variantCount: component.variantCount,
-      componentCount: component.componentCount || undefined,
-      thumbnail: (component.previewImage || component.thumbnail) || undefined,
+      componentCount: component.componentCount,
+      thumbnail: component.thumbnail,
       isPageExample: component.isPageExample,
     }
   } catch (error) {
-    console.error(`Failed to fetch component ${id} from database:`, error)
+    console.error(`Failed to fetch component ${id} from content collections:`, error)
     return null
   }
 }

@@ -120,9 +120,10 @@ export function ComponentDocs({
   // New comprehensive layout
   return (
     <div className="min-h-screen w-full">
-      <div className="flex flex-col lg:flex-row gap-10 lg:gap-14">
-        {/* Main Content */}
-        <div className="flex-1 w-full px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 py-4">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-0 lg:gap-12">
+          {/* Main Content */}
+          <div className="flex-1 w-full max-w-3xl space-y-6 sm:space-y-8 py-4 overflow-x-hidden">
           {/* Header */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -245,10 +246,13 @@ export function ComponentDocs({
           )}
         </div>
 
-        {/* Table of Contents Sidebar - Desktop Only */}
-        <aside className="hidden lg:block lg:w-64 shrink-0 lg:pt-4">
-          <TableOfContents items={tocItems} />
-        </aside>
+          {/* Table of Contents Sidebar - Desktop Only */}
+          <aside className="hidden lg:block lg:w-64 xl:w-72 shrink-0 lg:pt-4">
+            <div className="sticky top-20">
+              <TableOfContents items={tocItems} />
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   )

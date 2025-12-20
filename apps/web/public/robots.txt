@@ -1,0 +1,15 @@
+# robots.txt for Gated Component Library
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/admin/
+Disallow: /_next/
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1

@@ -48,7 +48,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
   }
 
   return (
-    <div className="sticky top-20 w-64 border rounded-lg">
+    <div className="sticky top-24 w-full border rounded-lg max-h-[calc(100vh-7rem)] overflow-auto">
       <div className="p-4 lg:p-6">
         <div className="flex items-center gap-2 mb-4 lg:mb-6">
           <List className="w-4 h-4 text-muted-foreground" />

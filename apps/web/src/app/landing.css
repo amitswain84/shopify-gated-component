@@ -1,0 +1,38 @@
+/* Animations moved from globals.css */
+.animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+}
+
+.animate-border-beam {
+    animation: border-beam calc(var(--duration)*1s) infinite linear;
+}
+
+@theme inline {
+    @keyframes shiny-text {
+
+        0%,
+        90%,
+        100% {
+            background-position: calc(-100% - var(--shiny-width)) 0;
+        }
+
+        30%,
+        60% {
+            background-position: calc(100% + var(--shiny-width)) 0;
+        }
+    }
+
+    @keyframes rainbow {
+        0% {
+            background-position: 0%;
+        }
+
+        100% {
+            background-position: 200%;
+        }
+    }
+}

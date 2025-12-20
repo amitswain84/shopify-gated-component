@@ -1,27 +1,48 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import * as React from "react"
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Package, User, Settings, ChevronRight, LayoutDashboard, Library, FileText, HelpCircle, MessageSquare, ClipboardCheck } from 'lucide-react'
+import {
+  LayoutDashboard,
+  FileText,
+  Package,
+  ClipboardCheck,
+  Palette,
+  HelpCircle,
+  MessageSquare,
+  Sparkles,
+  CreditCard,
+  User,
+  LogOut,
+  Library,
+  ChevronRight,
+  FileText as FileIcon
+} from "lucide-react"
+import { useUser, useClerk, UserButton } from "@clerk/nextjs" // Added UserButton import
+
 import { useUserPlan } from '@/hooks/use-user-plan'
+import { Badge } from '@/components/ui/badge'
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarFooter,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarMenuSubButton,
-  SidebarHeader,
-  SidebarFooter,
-} from '@/components/ui/sidebar'
-import { UserButton, useUser, useClerk } from '@clerk/nextjs'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+  SidebarMenuSubItem,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+} from "@/components/ui/sidebar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,9 +51,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { ChevronsUpDown, Sparkles, CreditCard, Bell, LogOut } from 'lucide-react'
+} from "@/components/ui/dropdown-menu"
+import { ChevronsUpDown } from "lucide-react"
 
+// Platform Items Data
 const platformItems = [
   {
     title: 'Dashboard',
@@ -44,8 +66,8 @@ const platformItems = [
     url: '/dashboard/docs',
     icon: FileText,
     items: [
-      { title: 'Introduction', url: '/dashboard/docs/introduction' },
-      { title: 'Tutorials', url: '/dashboard/docs/tutorials' },
+      { title: 'Onboarding', url: '/dashboard/onboarding' },
+      { title: 'Tutorials', url: '/dashboard/tutorials' },
     ],
   },
   {
@@ -59,6 +81,13 @@ const platformItems = [
     icon: ClipboardCheck,
   },
   {
+    title: 'Themes',
+    url: '#',
+    icon: Palette,
+    badge: 'Coming Soon',
+    disabled: true,
+  },
+  {
     title: 'Support',
     url: '/support',
     icon: HelpCircle,
@@ -70,9 +99,7 @@ const platformItems = [
   },
 ]
 
-// Account items are now only in the dropdown menu
-
-export function AppSidebar() {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const { user } = useUser()
   const { signOut } = useClerk()
@@ -86,18 +113,25 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b h-16 flex flex-row items-center px-4">
-        <Link href="/dashboard" className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Library className="h-4 w-4 shrink-0" />
-          </div>
-          <div className="flex min-w-0 flex-col group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-semibold truncate">Gated Components</span>
-            <span className="text-xs text-muted-foreground">{plan} Plan</span>
-          </div>
-        </Link>
+    <Sidebar variant="inset" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href="/dashboard">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <Library className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">Gated Components</span>
+                  <span className="truncate text-xs">{plan} Plan</span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -108,22 +142,17 @@ export function AppSidebar() {
                   <Collapsible key={item.title} defaultOpen className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
-                        <SidebarMenuButton
-                          isActive={pathname.startsWith(item.url)}
-                        >
-                          <item.icon className="w-4 h-4 shrink-0" />
+                        <SidebarMenuButton isActive={pathname.startsWith(item.url)} tooltip={item.title}>
+                          <item.icon />
                           <span>{item.title}</span>
-                          <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90 shrink-0" />
+                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
                         <SidebarMenuSub>
                           {item.items.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
-                              <SidebarMenuSubButton
-                                asChild
-                                isActive={pathname === subItem.url}
-                              >
+                              <SidebarMenuSubButton asChild isActive={pathname === subItem.url}>
                                 <Link href={subItem.url}>
                                   <span>{subItem.title}</span>
                                 </Link>
@@ -139,10 +168,18 @@ export function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       isActive={pathname === item.url}
+                      tooltip={item.title}
+                      disabled={item.disabled}
+                      className={item.disabled ? "opacity-70 cursor-not-allowed" : ""}
                     >
-                      <Link href={item.url}>
-                        <item.icon className="w-4 h-4 shrink-0" />
+                      <Link href={item.url} className={item.disabled ? "pointer-events-none" : ""}>
+                        <item.icon />
                         <span>{item.title}</span>
+                        {item.badge && (
+                          <Badge variant="outline" className="ml-auto text-[10px] px-2 py-0.5 h-5 font-medium border-muted-foreground/30">
+                            {item.badge}
+                          </Badge>
+                        )}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -154,18 +191,63 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        {/* Newsletter Subscription (above user menu) */}
-        <div className="px-3 pb-3 group-data-[collapsible=icon]:hidden">
-          <div className="rounded-xl bg-sidebar-accent p-4 space-y-3 border border-sidebar-border">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Subscribe to our newsletter</h3>
-              <p className="text-xs text-muted-foreground">Opt-in to receive updates and news about the sidebar.</p>
-            </div>
-            <NewsletterForm />
-          </div>
-        </div>
-
         <SidebarMenu>
+          {/* Unlock Pro Card */}
+          <SidebarMenuItem className="px-1 pb-4">
+            <div className="relative overflow-hidden rounded-xl border border-primary/20 bg-card p-4 group-data-[collapsible=icon]:hidden shadow-sm">
+              <div className="mb-3">
+                <span className="inline-flex items-center rounded-sm bg-green-500/10 px-1.5 py-0.5 text-[10px] font-medium text-green-500 ring-1 ring-inset ring-green-500/20">
+                  <span className="mr-1 h-1 w-1 rounded-full bg-green-500"></span>
+                  LIMITED TIME OFFER
+                </span>
+              </div>
+
+              <h3 className="mb-2 text-lg font-bold leading-tight">
+                Ship <span className="italic font-serif">Faster</span> with<br />
+                <span className="text-primary">Gated Pro</span>
+              </h3>
+
+              <p className="mb-4 text-xs text-muted-foreground leading-relaxed">
+                Stop building from scratch. Get 8 production-ready templates and 850+ premium components that your users will love.
+              </p>
+
+              <div className="mb-4 space-y-2">
+                {[
+                  "Next.js 15 + TypeScript ready",
+                  "Copy, paste, customize in minutes",
+                  "Save 100+ hours of development"
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-500/10 text-green-500">
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 1L3.5 6.5L1 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mb-3 flex items-baseline gap-1">
+                <span className="text-2xl font-bold">$199</span>
+                <span className="text-xs text-muted-foreground">once</span>
+              </div>
+
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('openPricingDialog'))}
+                className="group flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-2.5 text-xs font-semibold text-background transition-all hover:opacity-90 active:scale-95"
+              >
+                Get Lifetime Access
+                <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              </button>
+
+              <p className="mt-3 text-center text-[10px] text-muted-foreground">
+                Trusted by 5,000+ developers
+              </p>
+            </div>
+          </SidebarMenuItem>
+
+          {/* User Menu */}
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -173,79 +255,75 @@ export function AppSidebar() {
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <div className="flex items-center gap-2 flex-1">
-                    <UserButton
-                      afterSignOutUrl="/"
-                      appearance={{
-                        elements: {
-                          avatarBox: "h-8 w-8",
-                        },
-                      }}
-                    />
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">{userName}</span>
-                      <span className="truncate text-xs text-muted-foreground">{userEmail}</span>
-                    </div>
+                  {/* Using generic Avatar/Initials if UserButton doesn't support direct custom rendering easily in this structure, 
+                       or we can use UserButton. But to match the Sidebar-08 design, we want the custom menu. 
+                       I'll use the Clerk user data to render the avatar/name manually for the trigger, 
+                       and then custom items in the menu. */}
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground overflow-hidden">
+                    {/* Try to use UserButton just for the avatar image? No, UserButton controls its own menu. 
+                         If we want Shadcn menu, we should use <img src={user.imageUrl} /> */}
+                    {user?.imageUrl ? (
+                      <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="size-4" />
+                    )}
+                  </div>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{userName}</span>
+                    <span className="truncate text-xs">{userEmail}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                side="top"
+                side="bottom"
                 align="end"
                 sideOffset={4}
               >
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground overflow-hidden">
+                      {user?.imageUrl ? (
+                        <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="size-4" />
+                      )}
+                    </div>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">{userName}</span>
-                      <span className="truncate text-xs text-muted-foreground">{userEmail}</span>
+                      <span className="truncate text-xs">{userEmail}</span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem 
-                    className="cursor-pointer"
-                    onSelect={(e) => {
-                      e.preventDefault()
-                      window.dispatchEvent(new CustomEvent('openPricingDialog'))
-                    }}
-                  >
+                  <DropdownMenuItem onClick={() => window.dispatchEvent(new CustomEvent('openPricingDialog'))}>
                     <Sparkles className="mr-2 h-4 w-4" />
                     Upgrade to Pro
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/profile" className="cursor-pointer">
+                  <Link href="/dashboard/profile" className="w-full">
+                    <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" />
                       Account
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/settings" className="cursor-pointer">
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href="/dashboard/settings" className="w-full">
+                    <DropdownMenuItem>
                       <CreditCard className="mr-2 h-4 w-4" />
                       Billing
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell className="mr-2 h-4 w-4" />
-                    Notifications
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/docs/changelog" className="cursor-pointer">
-                      <FileText className="mr-2 h-4 w-4" />
-                      Changelog
-                    </Link>
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem onClick={() => window.dispatchEvent(new CustomEvent('openChangelogDialog'))}>
+                    <FileIcon className="mr-2 h-4 w-4" />
+                    Changelog
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup></DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
@@ -255,65 +333,5 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  )
-}
-
-function NewsletterForm() {
-  const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setMessage('')
-
-    try {
-      const response = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-
-      if (response.ok) {
-        setMessage('✓ Subscribed!')
-        setEmail('')
-      } else {
-        const data = await response.json()
-        setMessage(data.error || 'Failed to subscribe')
-      }
-    } catch (error) {
-      setMessage('Failed to subscribe')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div className="space-y-2">
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={loading}
-          className="w-full h-9 px-3 text-sm border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full h-9 px-4 text-sm font-medium bg-foreground text-background rounded-md hover:bg-foreground/90 disabled:opacity-50 transition-colors"
-        >
-          {loading ? 'Subscribing...' : 'Subscribe'}
-        </button>
-      </form>
-      {message && (
-        <p className={`text-xs text-foreground`}>
-          {message}
-        </p>
-      )}
-    </div>
   )
 }
