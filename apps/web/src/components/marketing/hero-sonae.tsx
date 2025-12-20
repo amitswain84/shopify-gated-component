@@ -84,10 +84,10 @@ export function HeroSonae() {
                         <AvatarCircles
                             numPeople={99}
                             avatarUrls={[
-                                "https://github.com/shadcn.png",
-                                "https://github.com/dillionverma.png",
-                                "https://github.com/leerob.png",
-                                "https://github.com/evilrabbit.png",
+                                { imageUrl: "https://github.com/shadcn.png", profileUrl: "https://github.com/shadcn" },
+                                { imageUrl: "https://github.com/dillionverma.png", profileUrl: "https://github.com/dillionverma" },
+                                { imageUrl: "https://github.com/leerob.png", profileUrl: "https://github.com/leerob" },
+                                { imageUrl: "https://github.com/evilrabbit.png", profileUrl: "https://github.com/evilrabbit" },
                             ]}
                         />
                         {/* Rating */}
