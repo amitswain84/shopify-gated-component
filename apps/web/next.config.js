@@ -35,6 +35,10 @@ const baseConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'startup-template-sage.vercel.app',
       },
       {

@@ -5,6 +5,7 @@ export const advancedSeo: ChecklistItem = {
   title: 'Advanced SEO optimization',
   description: 'Implement advanced SEO strategies to boost visibility and rankings',
   icon: 'TrendingUp',
+  access: 'paid',
   isPro: true,
   order: 6,
   tags: ['seo', 'marketing', 'advanced', 'pro'],

@@ -5,6 +5,7 @@ export const setupStore: ChecklistItem = {
   title: 'Set up your Shopify store',
   description: 'Create and configure your basic Shopify store settings',
   icon: 'Package',
+  access: 'free',
   isPro: false,
   order: 1,
   tags: ['setup', 'configuration', 'basics'],
