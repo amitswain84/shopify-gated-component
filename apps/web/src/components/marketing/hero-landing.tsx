@@ -145,7 +145,7 @@ export function HeroLanding() {
 
                     <div className="flex justify-center">
                         <Button className="h-12 px-8 rounded-full bg-[#1A1A1A] hover:bg-black text-white text-sm font-medium shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all flex items-center gap-2 group">
-                            Get Started <span className="text-white/40 font-normal ml-1">· It's free</span>
+                            Get Started <span className="text-white/40 font-normal ml-1">· It&apos;s free</span>
                             <ChevronDown className="w-4 h-4 -rotate-90 group-hover:translate-x-0.5 transition-transform" />
                         </Button>
                     </div>
@@ -234,16 +234,16 @@ export function HeroLanding() {
                         <div className="flex-1 bg-white p-6 relative">
                             <pre className="font-mono text-[13px] leading-6">
                                 <code className="block">
-                                    <span className="text-purple-600">import</span> * <span className="text-purple-600">as</span> Button <span className="text-purple-600">from</span> <span className="text-green-600">'./components/button'</span>;<br />
+                                    <span className="text-purple-600">import</span> * <span className="text-purple-600">as</span> Button <span className="text-purple-600">from</span> <span className="text-green-600">&apos;./components/button&apos;</span>;<br />
                                     <span className="text-purple-600">import</span> {'{'}<br />
                                     {'  '}RiArrowLeftSLine,<br />
                                     {'  '}RiArrowRightSLine<br />
-                                    {'}'} <span className="text-purple-600">from</span> <span className="text-green-600">'@remixicon/react'</span>;<br />
+                                    {'}'} <span className="text-purple-600">from</span> <span className="text-green-600">&apos;@remixicon/react&apos;</span>;<br />
                                     <br />
                                     <span className="text-purple-600">export default function</span> <span className="text-blue-600">App</span>() {'{'}<br />
                                     {'  '}<span className="text-purple-600">return</span> (<br />
-                                    {'    '}<span className="text-gray-400">&lt;</span><span className="text-red-500">div</span> <span className="text-yellow-600">className</span>=<span className="text-green-600">"flex min-h-screen flex-col items-center"</span><span className="text-gray-400">&gt;</span><br />
-                                    {'      '}<span className="text-gray-400">&lt;</span>Button.Root <span className="text-yellow-600">variant</span>=<span className="text-green-600">"primary"</span> <span className="text-yellow-600">mode</span>=<span className="text-green-600">"filled"</span><span className="text-gray-400">&gt;</span><br />
+                                    {'    '}<span className="text-gray-400">&lt;</span><span className="text-red-500">div</span> <span className="text-yellow-600">className</span>=<span className="text-green-600">&quot;flex min-h-screen flex-col items-center&quot;</span><span className="text-gray-400">&gt;</span><br />
+                                    {'      '}<span className="text-gray-400">&lt;</span>Button.Root <span className="text-yellow-600">variant</span>=<span className="text-green-600">&quot;primary&quot;</span> <span className="text-yellow-600">mode</span>=<span className="text-green-600">&quot;filled&quot;</span><span className="text-gray-400">&gt;</span><br />
                                     {'        '}<span className="text-gray-400">&lt;</span>Button.Icon <span className="text-yellow-600">as</span>={'{'}<span className="text-blue-500">RiArrowLeftSLine</span>{'}'} <span className="text-gray-400">/&gt;</span><br />
                                     {'        '}Learn More<br />
                                     {'      '}<span className="text-gray-400">&lt;/</span>Button.Root<span className="text-gray-400">&gt;</span><br />

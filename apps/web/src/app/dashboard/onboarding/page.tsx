@@ -12,7 +12,7 @@ export default function OnboardingPage() {
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Welcome to Gated Components</h2>
                     <p className="text-muted-foreground">
-                        Let's get you set up and shipping in minutes.
+                        Let&apos;s get you set up and shipping in minutes.
                     </p>
                 </div>
             </div>
