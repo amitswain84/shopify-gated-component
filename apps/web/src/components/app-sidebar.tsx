@@ -113,7 +113,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar collapsible="icon" variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -198,24 +198,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <div className="mb-3">
                 <span className="inline-flex items-center rounded-sm bg-green-500/10 px-1.5 py-0.5 text-[10px] font-medium text-green-500 ring-1 ring-inset ring-green-500/20">
                   <span className="mr-1 h-1 w-1 rounded-full bg-green-500"></span>
-                  LIMITED TIME OFFER
+                  UNLOCK THE FULL FLEX
                 </span>
               </div>
 
-              <h3 className="mb-2 text-lg font-bold leading-tight">
-                Ship <span className="italic font-serif">Faster</span> with<br />
-                <span className="text-primary">Gated Pro</span>
+              <h3 className="mb-2 text-base font-bold leading-tight whitespace-nowrap">
+                Get Lifetime Access
               </h3>
 
               <p className="mb-4 text-xs text-muted-foreground leading-relaxed">
-                Stop building from scratch. Get 8 production-ready templates and 850+ premium components that your users will love.
+                Grab 350+ banger blocks and 500+ ROI roadmaps
               </p>
 
               <div className="mb-4 space-y-2">
                 {[
-                  "Next.js 15 + TypeScript ready",
-                  "Copy, paste, customize in minutes",
-                  "Save 100+ hours of development"
+                  "500+ Foolproof Checklist",
+                  "Copy. Paste. Profit.",
+                  "5x Your Margins"
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-500/10 text-green-500">
@@ -229,20 +228,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </div>
 
               <div className="mb-3 flex items-baseline gap-1">
-                <span className="text-2xl font-bold">$199</span>
-                <span className="text-xs text-muted-foreground">once</span>
+                <span className="text-2xl font-bold">$399</span>
+                <span className="text-xs text-muted-foreground">Lifetime Bag</span>
               </div>
 
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('openPricingDialog'))}
                 className="group flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-2.5 text-xs font-semibold text-background transition-all hover:opacity-90 active:scale-95"
               >
-                Get Lifetime Access
+                Claim the Pro Drip
                 <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
               </button>
 
-              <p className="mt-3 text-center text-[10px] text-muted-foreground">
-                Trusted by 5,000+ developers
+              {/* Avatar Group */}
+              <div className="mb-1 mt-4 flex items-center justify-center">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="relative w-6 h-6 rounded-full border-2 border-card bg-gray-200 overflow-hidden">
+                      <img
+                        src={`https://ui-avatars.com/api/?name=User+${i}&background=random&color=fff`}
+                        alt={`User ${i}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-0.5 text-center text-[10px] text-muted-foreground">
+                Joining 2,500+ Agency Legends
               </p>
             </div>
           </SidebarMenuItem>
@@ -268,11 +282,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <User className="size-4" />
                     )}
                   </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-semibold">{userName}</span>
                     <span className="truncate text-xs">{userEmail}</span>
                   </div>
-                  <ChevronsUpDown className="ml-auto size-4" />
+                  <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
