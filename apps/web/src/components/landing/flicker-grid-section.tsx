@@ -5,13 +5,13 @@ import { FlickeringGrid } from "@/components/ui/flickering-grid";
 export function FlickerGridSection({ title = "Performance" }: { title?: string }) {
     return (
         <section className="w-full bg-white border-b border-gray-200">
-            <div className="w-full max-w-[1200px] mx-auto py-0 px-8">
+            <div className="w-full max-w-[1200px] mx-auto py-0 px-3 md:px-6">
                 {/* 
               Height: 
               Desktop: 120px
               Mobile: Decrease by 30% ~ 84px.
           */}
-                <div className="bg-background relative h-[84px] md:h-[120px] w-full overflow-hidden flex items-center justify-center">
+                <div className="bg-white relative h-[84px] md:h-[120px] w-full overflow-hidden flex items-center justify-center">
 
                     {/* Flickering Grid Background (Layer 0) */}
                     <FlickeringGrid

@@ -1,47 +1,46 @@
-
 "use client";
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { GridPattern } from "@/components/ui/grid-pattern";
 
-export function ToolIntegrations() {
+export function FeatureBentoGrid() {
     const features = [
         {
             title: "Native Flow, Zero Friction",
-            description: "Seamless user experiences that feel right at home.",
+            description: "Smooth UX feeling like native Liquid. Ship premium custom builds without the usual development headache.",
             image: "/assets/landing-page/images/Native Flow, Zero Friction.webp"
         },
         {
             title: "350+ Ways to Flex",
-            description: "A massive library of components for every use case.",
+            description: "Your ultimate creative arsenal. Swap mid sections for high drip layouts that keep clients obsessed.",
             image: "/assets/landing-page/images/350+ Ways to Flex.webp"
         },
         {
             title: "No Bloat, Just Speed",
-            description: "Optimized for performance with zero unnecessary code.",
+            description: "Pure performance energy. No trash libraries, just clean code hitting 90+ PageSpeed scores every time.",
             image: "/assets/landing-page/images/No Bloat, Just Speed.webp"
         },
         {
             title: "Fresh Drops, Every Week",
-            description: "New components and templates added regularly.",
+            description: "Toolkit never stays stale. Constantly dropping new heat so your agency leads every Shopify trend.",
             image: "/assets/landing-page/images/Fresh Drops, Every Week.webp"
         },
         {
             title: "Zero Dev Tax. Zero Theme Debt",
-            description: "Clean code that respects your architecture.",
+            description: "Keep themes clean and margins fat. Stop paying bad code tax with architecture respecting foundations.",
             image: "/assets/landing-page/images/Zero Dev Tax. Zero Theme Debt..webp"
         },
         {
             title: "Ultimate Vibe Checklist",
-            description: "Everything you need to ship world-class products.",
+            description: "The Main Character roadmap. Foolproof checklists ensuring every store you launch is polished and scalable.",
             image: "/assets/landing-page/images/Ultimate Vibe Checklist.webp"
         }
     ];
 
     return (
         <section className="w-full bg-white border-b border-gray-200 overflow-hidden">
-            <div className="w-full max-w-[1200px] mx-auto px-6">
+            <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6">
                 <div className="flex w-full items-stretch">
 
                     {/* Left Pattern Border - Inside 
@@ -96,9 +95,9 @@ export function ToolIntegrations() {
                                         </div>
                                     </div>
 
-                                    {/* Bottom Box: 120px Fixed Height. p-4. */}
-                                    <div className="relative w-full h-[120px] flex flex-col justify-center p-4 bg-white">
-                                        <h3 className="text-xl font-semibold text-black mb-1 font-geist-sans">{feature.title}</h3>
+                                    {/* Bottom Box: Auto Height. p-2. */}
+                                    <div className="relative w-full h-auto flex flex-col justify-start p-2 bg-white border-t border-gray-100">
+                                        <h3 className="text-base md:text-lg font-semibold text-black mb-2 font-geist-sans">{feature.title}</h3>
                                         <p className="text-gray-500 font-inter leading-relaxed text-sm">
                                             {feature.description}
                                         </p>
@@ -127,4 +126,3 @@ export function ToolIntegrations() {
         </section>
     );
 }
-

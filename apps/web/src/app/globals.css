@@ -111,6 +111,17 @@
     --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
   }
 
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+
   /* Manual Hard Fix for Transparency and Dark Mode */
   .fix-opaque-bg {
     background-color: white !important;
@@ -121,17 +132,6 @@
     /* zinc-950 */
   }
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 
 ::view-transition-old(root),
 ::view-transition-new(root) {

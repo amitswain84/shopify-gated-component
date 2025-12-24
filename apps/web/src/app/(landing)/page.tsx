@@ -2,10 +2,9 @@ import { Header } from "@/components/landing/header";
 import { Hero } from "@/components/landing/hero";
 import { Brands } from "@/components/landing/brands";
 import { FeatureSection } from "@/components/landing/feature-section";
-import { ToolIntegrations } from "@/components/landing/tool-integrations";
+import { FeatureBentoGrid } from "@/components/landing/feature-bento-grid";
 import { FlickerGridSection } from "@/components/landing/flicker-grid-section";
 import { TweetSection } from "@/components/landing/tweet-section";
-import { PricingHero } from "@/components/landing/pricing-hero";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { FAQSection } from "@/components/landing/faq-section";
 import { CTASection } from "@/components/landing/cta-section";
@@ -47,7 +46,7 @@ export default function Home() {
 
         {/* 6 Cards Section (Tool Integrations) */}
         <FadeIn>
-          <ToolIntegrations />
+          <FeatureBentoGrid />
         </FadeIn>
 
         {/* Performance Text Section */}
@@ -80,14 +79,8 @@ export default function Home() {
           <FAQSection />
         </FadeIn>
 
-        {/* CTA "Email Us" Section */}
         <FadeIn>
           <CTASection />
-        </FadeIn>
-
-        {/* Pricing Header (Black Box) - Moved here */}
-        <FadeIn>
-          <PricingHero />
         </FadeIn>
 
         {/* Footer */}

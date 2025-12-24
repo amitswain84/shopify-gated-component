@@ -14,22 +14,22 @@ export function FeatureSection() {
                         {/* Using a simple icon closely resembling the logo in image */}
                         <Share2 className="w-3.5 h-3.5 fill-current" />
                     </span>
-                    <span className="text-gray-600 font-medium text-sm font-inter">Dub Links</span>
+                    <span className="text-gray-600 font-medium text-sm font-inter">⚡ THE SECRET SAUCE</span>
                 </div>
 
                 {/* Heading */}
                 <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-black mb-6 font-geist-sans">
-                    It starts with a link
+                    It starts with a flex.
                 </h2>
 
                 {/* Description */}
                 <p className="text-xl text-gray-600 mb-8 max-w-2xl font-inter leading-relaxed">
-                    Create branded short links with superpowers: built-in QR codes, device/geo-targeting, A/B testing, deep links, and more.
+                    Build premium storefronts with superpowers: 350+ high-drip sections, zero-code fatigue, instant SEO glow-up, and mobile-first energy. No cap—it’s the ultimate kit for agency legends.
                 </p>
 
                 {/* Button */}
                 <Button variant="outline" className="h-[44px] px-6 rounded-[8px] border-gray-200 text-gray-700 font-medium hover:bg-gray-50 hover:text-black font-inter shadow-sm bg-white">
-                    Explore Links
+                    Scope the Drip
                 </Button>
             </div>
         </section>
