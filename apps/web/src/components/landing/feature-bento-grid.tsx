@@ -95,8 +95,8 @@ export function FeatureBentoGrid() {
                                         </div>
                                     </div>
 
-                                    {/* Bottom Box: Auto Height. p-2. */}
-                                    <div className="relative w-full h-auto flex flex-col justify-start p-2 bg-white border-t border-gray-100">
+                                    {/* Bottom Box: Auto Height. p-2 mobile, p-6 desktop. */}
+                                    <div className="relative w-full h-auto flex flex-col justify-start p-2 md:p-6 bg-white border-t border-gray-100">
                                         <h3 className="text-base md:text-lg font-semibold text-black mb-2 font-geist-sans">{feature.title}</h3>
                                         <p className="text-gray-500 font-inter leading-relaxed text-sm">
                                             {feature.description}
